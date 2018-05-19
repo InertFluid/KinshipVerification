@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sat May 12 22:00:25 2018
-
-@author: inertfluid
-"""
-
 import numpy as np
 import imageio
 import scipy.io
