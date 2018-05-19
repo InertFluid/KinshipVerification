@@ -16,78 +16,31 @@ count=0
 all_images=[]
 Kin = pd.DataFrame(columns=['Fold', 'Kin/Not-Kin'])
 
-mat_fd = scipy.io.loadmat('KinFaceW-I/meta_data/fd_pairs.mat')
-mat_fd = mat_fd["pairs"]
-for j in range(0, mat_fd.shape[0]):
-    s='/home/inertfluid/KinFaceW-I/images/father-dau/fd_'+mat_fd[j][2][0][3:6]
-    image1 = imageio.imread(s+'_1.jpg')
-    s='/home/inertfluid/KinFaceW-I/images/father-dau/fd_'+mat_fd[j][3][0][3:6]  
-    image2 = imageio.imread(s+'_2.jpg')
-    Kin.loc[count] = [mat_fd[j][0][0][0], mat_fd[j][1][0][0]]
-    new_image=[]
-    for i in range(len(image1)):
-        pre=[]                                                                                                                                                                                                                                                                  
-        for k in range(len(image1[i])):
-            pre+=[(list(image1[i][k])+list(image2[i][k]))]
-            pre[k]=np.array(pre[k])
-        new_image+=[np.array(pre)]
-    all_images+=[np.array(new_image)]
-    count+=1
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
-mat_fs = scipy.io.loadmat('KinFaceW-I/meta_data/fs_pairs.mat')
-mat_fs = mat_fs["pairs"]
-for j in range(0, mat_fs.shape[0]):                                                                                                                                                                                                                                                                                                                                   
-    s='/home/inertfluid/KinFaceW-I/images/father-son/fs_'+mat_fs[j][2][0][3:6]
-    image1 = imageio.imread(s+'_1.jpg')
-    s='/home/inertfluid/KinFaceW-I/images/father-son/fs_'+mat_fs[j][2][0][3:6]
-    image2 = imageio.imread(s+'_2.jpg')
-    Kin.loc[count] = [mat_fs[j][0][0][0], mat_fs[j][1][0][0]]
-    new_image=[]
-    for i in range(len(image1)):
-        pre=[]
-        for k in range(len(image1[i])):
-            pre+=[(list(image1[i][k])+list(image2[i][k]))]
-            pre[k]=np.array(pre[k])
-        new_image+=[np.array(pre)]
-    all_images+=[np.array(new_image)]
-    count+=1
+DS = 'KinFaceW-I'
 
-mat_md = scipy.io.loadmat('KinFaceW-I/meta_data/md_pairs.mat')
+mat_fd = scipy.io.loadmat(DS + '/meta_data/fd_pairs.mat')
+mat_fd = mat_fd["pairs"]
+mat_fs = scipy.io.loadmat(DS + '/meta_data/fs_pairs.mat')
+mat_fs = mat_fs["pairs"]
+mat_md = scipy.io.loadmat(DS + '/meta_data/md_pairs.mat')
 mat_md = mat_md["pairs"]
-for j in range(0, mat_md.shape[0]):                                                                                                                                                                                                                                                                                                                                   
-    s='/home/inertfluid/KinFaceW-I/images/mother-dau/md_'+mat_md[j][2][0][3:6]
-    image1 = imageio.imread(s+'_1.jpg')
-    s='/home/inertfluid/KinFaceW-I/images/mother-dau/md_'+mat_md[j][2][0][3:6]
-    image2 = imageio.imread(s+'_2.jpg')
-    Kin.loc[count] = [mat_md[j][0][0][0], mat_md[j][1][0][0]]
-    new_image=[]
-    for i in range(len(image1)):
-        pre=[]
-        for k in range(len(image1[i])):
-            pre+=[(list(image1[i][k])+list(image2[i][k]))]
-            pre[k]=np.array(pre[k])
-        new_image+=[np.array(pre)]
-    all_images+=[np.array(new_image)]
-    count+=1
-    
-    
-mat_ms = scipy.io.loadmat('KinFaceW-I/meta_data/ms_pairs.mat')
+mat_ms = scipy.io.loadmat(DS + '/meta_data/ms_pairs.mat')
 mat_ms = mat_ms["pairs"]
-for j in range(0, mat_ms.shape[0]):                                                                                                                                                                                                                                                                                                                                   
-    s='/home/inertfluid/KinFaceW-I/images/mother-son/ms_'+mat_ms[j][2][0][3:6]
-    image1 = imageio.imread(s+'_1.jpg')
-    s='/home/inertfluid/KinFaceW-I/images/mother-son/ms_'+mat_ms[j][2][0][3:6]
-    image2 = imageio.imread(s+'_2.jpg')
-    Kin.loc[count] = [mat_ms[j][0][0][0], mat_ms[j][1][0][0]]
-    new_image=[]
-    for i in range(len(image1)):
-        pre=[]
-        for k in range(len(image1[i])):
-            pre+=[(list(image1[i][k])+list(image2[i][k]))]
-            pre[k]=np.array(pre[k])
-        new_image+=[np.array(pre)]
-    all_images+=[np.array(new_image)]
-    count+=1
+
+Mat = [mat_fd, mat_fs, mat_md, mat_ms]
+string = ['father-dau/fd_', 'father-son/fs_', 'mother-dau/md_', 'mother-son/ms_']
+
+for m in range(0, 4):
+    for j in range(0, Mat[m].shape[0]):
+        s = DS + '/images/'+ string[m]
+        addr = s + Mat[m][j][2][0][3:6]
+        image1 = imageio.imread(addr +'_1.jpg')
+        addr = s + Mat[m][j][3][0][3:6]  
+        image2 = imageio.imread(addr +'_2.jpg')
+        Kin.loc[count] = [Mat[m][j][0][0][0], Mat[m][j][1][0][0]]
+        new_image = np.concatenate((image1, image2), axis=2)
+        all_images+=[np.array(new_image)]
+        count+=1
 
 all_images = np.array(all_images)
 Kin = np.array(Kin)
