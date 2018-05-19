@@ -64,83 +64,32 @@ np.random.shuffle(all_images)
 np.random.set_state(rng_state)
 np.random.shuffle(Kin) 
 
-Fold_1 = [[], []]
-Fold_2 = [[], []]
-Fold_3 = [[], []]
-Fold_4 = [[], []]
-Fold_5 = [[], []]
+Folds = [[[], []], [[], []], [[], []], [[], []], [[], []]]
 for i in range (0, all_images.shape[0]):
-    if(Data[1][i][0]==1):
-        Fold_1 = np.append(Fold_1, [[np.array(all_images[i])], [np.array(Kin[i])]], axis=1)
-    if(Data[1][i][0]==2):
-        Fold_2 = np.append(Fold_2, [[np.array(all_images[i])], [np.array(Kin[i])]], axis=1)
-    if(Data[1][i][0]==3):
-        Fold_3 = np.append(Fold_3, [[np.array(all_images[i])], [np.array(Kin[i])]], axis=1)
-    if(Data[1][i][0]==4):
-        Fold_4 = np.append(Fold_4, [[np.array(all_images[i])], [np.array(Kin[i])]], axis=1)
-    if(Data[1][i][0]==5):
-        Fold_5 = np.append(Fold_5, [[np.array(all_images[i])], [np.array(Kin[i])]], axis=1) 
-        
-X_1 = np.array(Fold_1[0])
-Y_1 = np.array([Fold_1[1][i][1] for i in range(Fold_1.shape[1])]) 
-X_2 = np.array(Fold_2[0])
-Y_2 = np.array([Fold_2[1][i][1] for i in range(Fold_2.shape[1])]) 
-X_3 = np.array(Fold_3[0])
-Y_3 = np.array([Fold_3[1][i][1] for i in range(Fold_3.shape[1])]) 
-X_4 = np.array(Fold_4[0])
-Y_4 = np.array([Fold_4[1][i][1] for i in range(Fold_4.shape[1])]) 
-X_5 = np.array(Fold_5[0])
-Y_5 = np.array([Fold_5[1][i][1] for i in range(Fold_5.shape[1])])
+    for j in range(0, 5):
+        if(Data[1][i][0]==j+1):
+            Folds[j] = np.append(Folds[j], [[np.array(all_images[i])], [np.array(Kin[i])]], axis=1)
 
-X_Train_1 = np.append(X_1, X_2, axis=0)
-X_Train_1 = np.append(X_Train_1, X_3, axis=0)
-X_Train_1 = np.append(X_Train_1, X_4, axis=0)
-Y_Train_1 = np.append(Y_1, Y_2, axis=0)
-Y_Train_1 = np.append(Y_Train_1, Y_3, axis=0)
-Y_Train_1 = np.append(Y_Train_1, Y_4, axis=0)
+X=[[], [], [], [], []]
+Y=[[], [], [], [], []] 
+for i in range(0, 5): 
+    X[i] = np.array(Folds[i][0])
+    Y[i] = np.array([Folds[i][1][j][1] for j in range(Folds[i].shape[1])]) 
 
-X_Test_1 = X_5
-Y_Test_1 = Y_5
-
-X_Train_2 = np.append(X_2, X_3, axis=0)
-X_Train_2 = np.append(X_Train_2, X_4, axis=0)
-X_Train_2 = np.append(X_Train_2, X_5, axis=0)
-Y_Train_2 = np.append(Y_2, Y_3, axis=0)
-Y_Train_2 = np.append(Y_Train_2, Y_4, axis=0)
-Y_Train_2 = np.append(Y_Train_2, Y_5, axis=0)
-
-X_Test_2 = X_1
-Y_Test_2 = Y_1
-
-X_Train_3 = np.append(X_3, X_4, axis=0)
-X_Train_3 = np.append(X_Train_3, X_5, axis=0)
-X_Train_3 = np.append(X_Train_3, X_1, axis=0)
-Y_Train_3 = np.append(Y_3, Y_4, axis=0)
-Y_Train_3 = np.append(Y_Train_3, Y_5, axis=0)
-Y_Train_3 = np.append(Y_Train_3, Y_1, axis=0)
-
-X_Test_3 = X_2
-Y_Test_3 = Y_2
-
-X_Train_4 = np.append(X_4, X_5, axis=0)
-X_Train_4 = np.append(X_Train_4, X_1, axis=0)
-X_Train_4 = np.append(X_Train_4, X_2, axis=0)
-Y_Train_4 = np.append(Y_4, Y_5, axis=0)
-Y_Train_4 = np.append(Y_Train_4, Y_1, axis=0)
-Y_Train_4 = np.append(Y_Train_4, Y_2, axis=0)
-
-X_Test_4 = X_3
-Y_Test_4 = Y_3
-
-X_Train_5 = np.append(X_5, X_1, axis=0)
-X_Train_5 = np.append(X_Train_5, X_2, axis=0)
-X_Train_5 = np.append(X_Train_5, X_3, axis=0)
-Y_Train_5 = np.append(Y_5, Y_1, axis=0)
-Y_Train_5 = np.append(Y_Train_5, Y_2, axis=0)
-Y_Train_5 = np.append(Y_Train_5, Y_3, axis=0)
-
-X_Test_5 = X_4
-Y_Test_5 = Y_4
+X_Train=[[], [], [], [], []] 
+Y_Train=[[], [], [], [], []]    
+X_Test=[[], [], [], [], []]
+Y_Test=[[], [], [], [], []]    
+    
+for i in range(0, 5):    
+    X_Train[i] = np.append(X[i%5], X[(i+1)%5], axis=0)
+    X_Train[i] = np.append(X_Train[i], X[(i+2)%5], axis=0)
+    X_Train[i] = np.append(X_Train[i], X[(i+3)%5], axis=0)
+    Y_Train[i] = np.append(Y[i%5], Y[(i+1)%5], axis=0)
+    Y_Train[i] = np.append(Y_Train[i], Y[(i+2)%5], axis=0)
+    Y_Train[i] = np.append(Y_Train[i], Y[(i+3)%5], axis=0)
+    X_Test[i] = X[(i+4)%5]
+    Y_Test[i] = Y[(i+4)%5]
 
 WTInit = RandomNormal(mean=0.0, stddev=0.01, seed=5)
 model=Sequential()
