@@ -43,8 +43,16 @@ for m in range(0, 4):
         count+=1
 
 all_images = np.array(all_images)
+all_images = all_images.astype('float32')
+all_images -= np.mean(all_images, axis=0)
+all_images /= np.std(all_images, axis=0)
 Kin = np.array(Kin)
 Data = [all_images, Kin]
+
+rng_state = np.random.get_state()
+np.random.shuffle(all_images)
+np.random.set_state(rng_state)
+np.random.shuffle(Kin) 
 
 Fold_1 = [[], []]
 Fold_2 = [[], []]
