@@ -1,18 +1,5 @@
 import numpy as np
-import imageio
-import scipy.io
-import pandas as pd
 import keras
-from keras.models import Sequential
-from keras.layers import Convolution2D
-from keras.layers import MaxPooling2D
-from keras.layers import Dropout
-from keras.layers import Activation
-from keras.layers import Flatten
-from keras.layers import Dense
-from keras.optimizers import SGD
-from keras.initializers import RandomNormal
-from keras.layers import BatchNormalization
 import sys
 
 sys.path.append('/home/inertfluid/.config/spyder-py3/')
