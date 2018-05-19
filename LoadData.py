@@ -122,50 +122,19 @@ sgd = SGD(lr=0.0001, momentum=0.9, decay=0.005)
 model.compile(optimizer='sgd', loss="categorical_crossentropy", metrics=['accuracy'])
 print(model.summary())
 
-X_Train_1 = np.reshape(list(X_Train_1), (X_Train_1.shape[0], 64, 64, 6))
-Y_Train_1 = keras.utils.to_categorical(Y_Train_1, 2)
-X_Test_1 = np.reshape(list(X_Test_1), (X_Test_1.shape[0], 64, 64, 6))
-Y_Test_1 = keras.utils.to_categorical(Y_Test_1, 2)
+score=[]
+for j in range(0, 5):
+    X_Train[j] = np.reshape(list(X_Train[j]), (X_Train[j].shape[0], 64, 64, 6))
+    Y_Train[j] = keras.utils.to_categorical(Y_Train[j], 2)
+    X_Test[j] = np.reshape(list(X_Test[j]), (X_Test[j].shape[0], 64, 64, 6))
+    Y_Test[j] = keras.utils.to_categorical(Y_Test[j], 2)
+    model.fit(X_Train[j], Y_Train[j], batch_size=64, epochs=50, validation_data=(X_Test[j], Y_Test[j]), shuffle=True)
+    score+=[model.evaluate(X_Test[j], Y_Test[j], verbose=1)]
+    
+score=np.array(score)
+loss = np.average(score.T[0])
+accuracy = np.average(score.T[1])
 
-model.fit(X_Train_1, Y_Train_1, batch_size=50, epochs=50, validation_data=(X_Test_1, Y_Test_1))
-score1 = model.evaluate(X_Test_1, Y_Test_1, verbose=0)
+print('Loss:', loss)
+print('Accuracy:', accuracy)
 
-X_Train_2 = np.reshape(list(X_Train_2), (X_Train_2.shape[0], 64, 64, 6))
-Y_Train_2 = keras.utils.to_categorical(Y_Train_2, 2)
-X_Test_2 = np.reshape(list(X_Test_2), (X_Test_2.shape[0], 64, 64, 6))
-Y_Test_2 = keras.utils.to_categorical(Y_Test_2, 2)
-
-model.fit(X_Train_2, Y_Train_2, batch_size=50, epochs=50, validation_data=(X_Test_2, Y_Test_2))
-score2 = model.evaluate(X_Test_2, Y_Test_2, verbose=0)
-
-X_Train_3 = np.reshape(list(X_Train_3), (X_Train_3.shape[0], 64, 64, 6))
-Y_Train_3 = keras.utils.to_categorical(Y_Train_3, 2)
-X_Test_3 = np.reshape(list(X_Test_3), (X_Test_3.shape[0], 64, 64, 6))
-Y_Test_3 = keras.utils.to_categorical(Y_Test_3, 2)
-
-model.fit(X_Train_3, Y_Train_3, batch_size=50, epochs=50, validation_data=(X_Test_3, Y_Test_3))
-score3 = model.evaluate(X_Test_3, Y_Test_3, verbose=0)
-
-X_Train_4 = np.reshape(list(X_Train_4), (X_Train_4.shape[0], 64, 64, 6))
-Y_Train_4 = keras.utils.to_categorical(Y_Train_4, 2)
-X_Test_4 = np.reshape(list(X_Test_4), (X_Test_4.shape[0], 64, 64, 6))
-Y_Test_4 = keras.utils.to_categorical(Y_Test_4, 2)
-
-model.fit(X_Train_4, Y_Train_4, batch_size=50, epochs=50, validation_data=(X_Test_4, Y_Test_4))
-score4 = model.evaluate(X_Test_4, Y_Test_4, verbose=0)
-
-X_Train_5 = np.reshape(list(X_Train_5), (X_Train_5.shape[0], 64, 64, 6))
-Y_Train_5 = keras.utils.to_categorical(Y_Train_5, 2)
-X_Test_5 = np.reshape(list(X_Test_5), (X_Test_5.shape[0], 64, 64, 6))
-Y_Test_5 = keras.utils.to_categorical(Y_Test_5, 2)
-
-model.fit(X_Train_5, Y_Train_5, batch_size=50, epochs=50, validation_data=(X_Test_5, Y_Test_5))
-score5 = model.evaluate(X_Test_5, Y_Test_5, verbose=0)
-
-score5
-loss = score1[0] + score2[0] + score3[0] + score4[0] + score5[0]
-loss/= 5
-
-accuracy = score1[1] + score2[1] + score3[1] + score4[1] + score5[1]
-accuracy/=5
-exit()
