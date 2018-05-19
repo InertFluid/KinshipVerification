@@ -8,9 +8,19 @@ Created on Sat May 12 22:00:25 2018
 
 import numpy as np
 import imageio
-import os
 import scipy.io
 import pandas as pd
+import keras
+from keras.models import Sequential
+from keras.layers import Convolution2D
+from keras.layers import MaxPooling2D
+from keras.layers import Dropout
+from keras.layers import Activation
+from keras.layers import Flatten
+from keras.layers import Dense
+from keras.optimizers import SGD
+from keras.initializers import RandomNormal
+from keras.layers import BatchNormalization
 
 count=0
 all_images=[]
@@ -131,15 +141,6 @@ Y_Train_5 = np.append(Y_Train_5, Y_3, axis=0)
 
 X_Test_5 = X_4
 Y_Test_5 = Y_4
-
-import keras
-from keras.models import Sequential
-from keras.layers import Convolution2D
-from keras.layers import MaxPooling2D
-from keras.layers import Flatten
-from keras.layers import Dense
-from keras.optimizers import SGD
-from keras.initializers import RandomNormal
 
 WTInit = RandomNormal(mean=0.0, stddev=0.01, seed=5)
 model=Sequential()
